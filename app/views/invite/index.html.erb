@@ -12,36 +12,77 @@
   <!-- End Google Analytics -->
 <% end %>
 
-<div class="container" style="text-align: center; max-width: 350px; padding-top: 20px;">
-  <% if @metadata[:icon_url] %>
-    <%= image_tag @metadata[:icon_url], class: "appIcon", style: "margin-bottom: 30px;" %>
-  <% else %>
-    <div style="margin-bottom: 20px"></div>
-  <% end %>
-
-  <% unless @message %>
-    <h4 class="" style="margin-bottom: 40px;"><%= @metadata[:title] %></h4>
-
-    <%= form_tag("submit", method: "post", style: "text-align: left") do %>
-      <%= label_tag(:first_name, t(:first_name_label)) %>
-      <%= text_field_tag :first_name, '', class: "form-control", placeholder: t(:first_name_placeholder) %><br />
-      <%= label_tag(:last_name, t(:last_name_label)) %>
-      <%= text_field_tag :last_name, '', class: "form-control", placeholder: t(:last_name_placeholder) %><br />
-      <%= label_tag(:email, t(:email_label), class: "required") %>
-      <%= email_field_tag :email, '', class: "form-control", placeholder: t(:email_placeholder) %><br />
-
-      <% if ENV["ITC_TOKEN"] %>
-        <% if params[:token] %>
-          <%= hidden_field_tag :token, '', value: params[:token] %>
-        <% else %>
-          <%= label_tag(:token, t(:password_label)) %>
-          <%= text_field_tag :token, '', class: "form-control", placeholder: t(:password_placeholder) %><br />
-        <% end %>
+<div class="kosmos-pageheader">
+  <div class="container">
+    <div class="center-block">
+      
+      <% if @metadata[:icon_url] %>
+        <%= image_tag @metadata[:icon_url], class: "appIcon", style: "margin-bottom: 30px;" %>
       <% end %>
 
-      <br />
-      <%= submit_tag t(:get_beta_access), class: 'btn btn-lg btn-primary btn-block', id: "submit" %>
-    <% end %>
+      <h1 class="white" style="margin-bottom: 40px;"><%= @metadata[:title] %></h1>
+      <p class="lead">
+        Beta signup description...
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="container" style="text-align: center; padding-top: 20px;">
+  
+  <% unless @message %>
+    <div class="row">
+
+      <div id="ios-signup" class="beta-signup col-sm-6 col-md-6">
+        <div class="thumbnail">
+          <img src="<%= asset_path('testflight-icon.png') %>" />
+          <div class="caption">
+            <h3>Signup for the IOS BETA</h3>
+          </div>
+        </div>
+      </div>
+      <div id="android-signup" class="beta-signup col-sm-6 col-md-6">
+        <div class="thumbnail">
+          <img src="<%= asset_path('android-icon.png') %>" />
+          <div class="caption">
+            <h3>Signup for the Android BETA</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="center-block">
+
+          <div id="ios-form" class="transition-div hidden">
+            <%= form_tag("submit", method: "post", style: "text-align: left") do %>
+              <%= label_tag(:first_name, t(:first_name_label)) %>
+              <%= text_field_tag :first_name, '', class: "form-control", placeholder: t(:first_name_placeholder) %><br />
+              <%= label_tag(:last_name, t(:last_name_label)) %>
+              <%= text_field_tag :last_name, '', class: "form-control", placeholder: t(:last_name_placeholder) %><br />
+              <%= label_tag(:email, t(:email_label), class: "required") %>
+              <%= email_field_tag :email, '', class: "form-control", placeholder: t(:email_placeholder) %><br />
+
+              <% if ENV["ITC_TOKEN"] %>
+                <% if params[:token] %>
+                  <%= hidden_field_tag :token, '', value: params[:token] %>
+                <% else %>
+                  <%= label_tag(:token, t(:password_label)) %>
+                  <%= text_field_tag :token, '', class: "form-control", placeholder: t(:password_placeholder) %><br />
+                <% end %>
+              <% end %>
+
+              <br />
+              <%= submit_tag t(:get_beta_access), class: 'btn btn-lg btn-primary btn-block', id: "submit" %>
+            <% end %>
+          </div>
+          <div id="android-signup">
+            <!-- nothing here --> 
+          </div>
+        </div>
+    </div>
+   
+
   <% else %>
     <p class="alert alert-<%= @type %>">
       <%= @message %>
@@ -49,16 +90,15 @@
   <% end %>
 </div>
 
-<style type="text/css">
-  .appIcon {
-    -webkit-border-radius: 22.544%;
-       -moz-border-radius: 22.544%;
-        -ms-border-radius: 22.544%;
-            border-radius: 22.544%;
+<script type="text/javascript">
+  $(document).ready(function(evt) {
+    console.log('ready!')
+    $('#ios-signup').click(function() {
+      $('#ios-form').addClass('show').removeClass('hidden');
+    })
+    $('#android-signup').click(function() {
+      $('#ios-form').removeClass('show').addClass('hidden');
+    });
 
-    width: 256px;
-  }
-  #submit {
-    margin-bottom: 20px;
-  }
-</style>
+  });
+</script>
